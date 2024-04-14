@@ -52,6 +52,11 @@ public class SimpleClock extends JFrame implements ActionListener {
                         localToGMT.setText("GMT");
                         timeFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
                     }
+                    else{
+                        localToGMT.setText("LocalTime");
+                        timeFormat.setTimeZone(TimeZone.getDefault());
+
+                    }
                 }
             });
             localToGMT.setFocusable(false);
@@ -88,6 +93,7 @@ public class SimpleClock extends JFrame implements ActionListener {
                 try {
                     Thread.sleep(1000);
                 } catch (Exception e) {
+                    Thread.currentThread().isInterrupted();
                     e.getStackTrace();
                 }
             }
@@ -96,7 +102,18 @@ public class SimpleClock extends JFrame implements ActionListener {
             new SimpleClock();
         }
         @Override
-    public void actionTwoPerformed(ActionEvent e){
+    public void actionPerformed(ActionEvent e){
+            if(twelveToTwentyfourButton.isSelected()==true) {
+                twelveToTwentyfourButton.setText("24 hour");
+                timeFormat = new SimpleDateFormat("HH:mm:ss a");
+            }
+            else{
+                timeFormat = new SimpleDateFormat("HH:mm:ss a");
+                twelveToTwentyfourButton.setText("12");
+            }
+
+        }
+        public void actionTwoPerformed(ActionEvent e){
 
         }
     }
