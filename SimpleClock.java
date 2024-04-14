@@ -2,12 +2,14 @@
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 
-public class SimpleClock extends JFrame {
-    
+public class SimpleClock extends JFrame implements ActionListener {
         Calendar calendar;
         SimpleDateFormat timeFormat;
         SimpleDateFormat dayFormat;
@@ -19,12 +21,14 @@ public class SimpleClock extends JFrame {
         String time;
         String day;
         String date;
+        JToggleButton twelveToTwentyfourButton = new JToggleButton("12 hour", false);
+        JToggleButton localToGMT = new JToggleButton("LocalTime", false);
 
         SimpleClock() {
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             this.setTitle("Digital Clock");
             this.setLayout(new FlowLayout());
-            this.setSize(350, 220);
+            this.setSize(400, 250);
             this.setResizable(false);
     
             timeFormat = new SimpleDateFormat("hh:mm:ss a");
@@ -37,6 +41,20 @@ public class SimpleClock extends JFrame {
             timeLabel.setOpaque(true);
             dayLabel=new JLabel();
             dayLabel.setFont(new Font("Ink Free",Font.BOLD,34));
+            twelveToTwentyfourButton.setBounds(200,100,100,50);
+            twelveToTwentyfourButton.addActionListener(this);
+            twelveToTwentyfourButton.setFocusable(false);
+            localToGMT.setBounds(-200,-100,100,50);
+            localToGMT.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(localToGMT.isSelected()==true){
+                        localToGMT.setText("GMT");
+                        timeFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+                    }
+                }
+            });
+            localToGMT.setFocusable(false);
     
             dateLabel=new JLabel();
             dateLabel.setFont(new Font("Ink Free",Font.BOLD,30));
@@ -46,12 +64,18 @@ public class SimpleClock extends JFrame {
             this.add(dayLabel);
             this.add(dateLabel);
             this.setVisible(true);
+            this.add(twelveToTwentyfourButton);
+            this.add(localToGMT);
     
             setTimer();
         }
     
         public void setTimer() {
-            while (true) {
+            while (!Thread.currentThread().isInterrupted()) {
+                //add multiple threads instead of a while true loop
+                //add 2 buttons
+                //this.setsize 450 &320 so it's not so crunched
+                //under exception e add thread.currentthread.is interrupted
                 time = timeFormat.format(Calendar.getInstance().getTime());
                 timeLabel.setText(time);
     
@@ -70,5 +94,9 @@ public class SimpleClock extends JFrame {
         }
         public static void main(String[] args) {
             new SimpleClock();
+        }
+        @Override
+    public void actionTwoPerformed(ActionEvent e){
+
         }
     }
